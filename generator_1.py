@@ -20,14 +20,18 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
-import cgitb
-cgitb.enable()
-import matilda
-from matilda import html
-from matilda import config
-print matilda.ct()
+import main
+import html
+import bootstrap
+print main.ct()
 
 text = "<p><ul>"
-for gen in config.generators:
+for gen in main.generators:
     link = '/matilda/cgi-bin/mkgen.py?type=' + gen
-    text += '\n<li>{}</li>'.format(html.a(link, config.generators[gen].description()))
+    text += '\n<li>{}</li>'.format(html.a(link, main.generators[gen].description()))
+
+text += '\n</ul></p>'
+print bootstrap.main(title='Pick a generator',
+                     stuff=text,
+                     )
+
