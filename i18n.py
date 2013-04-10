@@ -20,36 +20,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
-import i18n
-import pywikibot
 
+data = {'en':{'basegen': 'Base generator',
+              'catgen': 'Category generator',
+              'tempgen': 'Pages transcluding a template',
+              'wlhgen': 'Special:Whatlinkshere',
+              },
+        'qqq':{'basegen': 'The default description for a base generator',
+               'catgen': 'Description for a generator that uses a category',
+               'tempgen': 'Description for a generator that checks which pages transclude a template',
+               'wlhgen': 'A generator that uses pagelinks, similar to [[Special:Whatlinkshere]]',
+               },
+        }
 
-class BaseGenerator:
-    def __init__(self):
-        pass
-
-    def description(self):
-        if not hasattr(self, 'descrip'):
-            self.descrip = i18n.translate('basegen')
-        return self.descrip
-
-    def schema(self):
-        return {}
-
-
-class CategoryGenerator(BaseGenerator):
-    def __init__(self):
-        BaseGenerator.__init__()
-        pass
-
-    def description(self):
-        return i18n.translate('catgen')
-
-    def schema(self):
-        return {'site': 'pywikibot.Site',
-                'cat': 'pywikibot.Page',
-                'recurse': 'int',
-                'namespace': 'int',
-                'ignore': 'csv',
-                'ignoreprefix': 'csv',
-                }
+def translate(key, lang='en'):
+    if lang in data:
+        if key in data[lang]:
+            return data[lang][key]
+    return data['en'][key]

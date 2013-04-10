@@ -33,4 +33,5 @@ def ct():
     return "Content-type: text/html\n\n"
 
 import generator
-addGenerator('test', generator.BaseGenerator())
+addGenerator('basegen', generator.BaseGenerator())
+addGenerator('catgen', generator.CategoryGenerator())
