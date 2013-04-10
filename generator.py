@@ -27,5 +27,6 @@ class BaseGenerator:
         pass
 
     def description(self):
-        self.descrip = 'Base generator'
-
+        if not hasattr(self, 'descrip'):
+            self.descrip = 'Base generator'
+        return self.descrip
