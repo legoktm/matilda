@@ -23,9 +23,9 @@ IN THE SOFTWARE.
 import cgitb
 cgitb.enable()
 import main
+print main.ct()
 import html
 import bootstrap
-print main.ct()
 
 text = "<p><ul>"
 for gen in main.generators:
