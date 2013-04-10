@@ -39,7 +39,7 @@ class BaseGenerator:
 
 class CategoryGenerator(BaseGenerator):
     def __init__(self):
-        BaseGenerator.__init__()
+        BaseGenerator.__init__(self)
         pass
 
     def description(self):
