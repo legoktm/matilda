@@ -20,17 +20,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
-import cgitb
-cgitb.enable()
-generators = dict()
 
 
-def addGenerator(name, cls):
-    generators[name] = cls
+class BaseGenerator:
+    def __init__(self):
+        pass
 
+    def description(self):
+        self.descrip = 'Base generator'
 
-def ct():
-    return "Content-type: text/html\n\n"
-
-import generator
-addGenerator('test', generator.BaseGenerator)
