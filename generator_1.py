@@ -29,11 +29,11 @@ import bootstrap
 
 text = "<p><ul>"
 for gen in main.generators:
-    link = '/matilda/cgi-bin/mkgen.py?type=' + gen
+    link = '/matilda/cgi-bin/matilda/mkgen.py?type=' + gen
     text += '\n<li>{}</li>'.format(html.a(link, main.generators[gen].description()))
 
 text += '\n</ul></p>'
-print bootstrap.main(title='Pick a generator',
+print bootstrap.main(title='Pick a generator type',
                      stuff=text,
                      )
 

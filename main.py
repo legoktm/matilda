@@ -22,11 +22,15 @@ IN THE SOFTWARE.
 """
 import cgitb
 cgitb.enable()
+import cgi
 generators = dict()
+
+form = cgi.FieldStorage()
 
 
 def addGenerator(name, cls):
     generators[name] = cls
+
 
 
 def ct():

@@ -20,21 +20,31 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
-
-data = {'en':{'basegen': 'Base generator',
-              'catgen': 'Category generator',
-              'tempgen': 'Pages transcluding a template',
-              'wlhgen': 'Special:Whatlinkshere',
-              },
-        'qqq':{'basegen': 'The default description for a base generator',
-               'catgen': 'Description for a generator that uses a category',
-               'tempgen': 'Description for a generator that checks which pages transclude a template',
-               'wlhgen': 'A generator that uses pagelinks, similar to [[Special:Whatlinkshere]]',
+import main
+data = {'en': {'basegen': 'Base generator',
+               'catgen': 'Category generator',
+               'tempgen': 'Pages transcluding a template',
+               'wlhgen': 'Special:Whatlinkshere',
+               'submit': 'Submit',
                },
+        'qqq': {'basegen': 'The default description for a base generator',
+                'catgen': 'Description for a generator that uses a category',
+                'tempgen': 'Description for a generator that checks which pages transclude a template',
+                'wlhgen': 'A generator that uses pagelinks, similar to [[Special:Whatlinkshere]]',
+                'submit': 'Word used when submitting any form'
+                },
         }
 
-def translate(key, lang='en'):
+
+def getlang():
+    if 'uselang' in main.form:
+        return main.form['uselang'].value
+    return 'en'
+
+def translate(key):
+    lang = getlang()
     if lang in data:
         if key in data[lang]:
             return data[lang][key]
     return data['en'][key]
+
