@@ -1,13 +1,18 @@
 from __future__ import unicode_literals
+import i18n
+
 def main(**kwargs):
     #title=toolname
     #stuff=html content
     path = '//tools.wmflabs.org/matilda/bootstrap'
     nav = """<!--<li><a href="//tools.wmflabs.org/matilda/cgi-bin/home.py">matilda</a></li>-->
-    <li><a href="//www.wikidata.org/wiki/User:Legoktm/matilda">help</a></li>
-    <li><a href="//tools.wmflabs.org/matilda/cgi-bin/new.py">New jobs</a></li>
-    <li><a href="//toosl.wmflabs.org/matilda/cgi-bin/current.py">Currently running</a></li>
-    """
+    <li><a href="//www.wikidata.org/wiki/User:Legoktm/matilda">{}</a></li>
+    <li><a href="//tools.wmflabs.org/matilda/cgi-bin/new.py">{}</a></li>
+    <li><a href="//toosl.wmflabs.org/matilda/cgi-bin/current.py">{}</a></li>
+    """.format(i18n.translate('navbar-help'),
+               i18n.translate('navbar-newjobs'),
+               i18n.translate('navbar-currun'),
+               )
 
     return """
     <!DOCTYPE html>
