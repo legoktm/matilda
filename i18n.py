@@ -35,16 +35,35 @@ data = {'en': {'basegen': 'Base generator',
                 },
         }
 
+fallbacks = {'en-gb': ['en'],
+             }
+
+
+def can_fallback(key, lang):
+    if not lang in fallbacks:
+        return False
+    for l in fallbacks[lang]:
+        tl = translate(key, l)
+        if tl != translate(key, 'en'):
+            return tl
+    return False
+
 
 def getlang():
     if 'uselang' in main.form:
         return main.form['uselang'].value
     return 'en'
 
-def translate(key):
-    lang = getlang()
+
+def translate(key, lang=None):
+    if not lang:
+        lang = getlang()
     if lang in data:
         if key in data[lang]:
             return data[lang][key]
+    fb = can_fallback(key, lang)
+    if fb:
+        return fb
     return data['en'][key]
+
 
