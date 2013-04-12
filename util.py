@@ -21,6 +21,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 IN THE SOFTWARE.
 """
 import re
+import requests
 import oursql
 import os
 import subprocess
@@ -103,3 +104,23 @@ class DB:
 
     def is_open(self):
         return bool(self.db)
+
+
+def TUSC(username, password, lang, project):
+    headers = {'User-agent': 'http://tools.wmflabs.org/matilda/ by User:Legoktm'}
+    # http://tools.wikimedia.de/~magnus/tusc.php?check=1&botmode=1&user=USERNAME&language=LANGUAGE&project=PROJECT&password=TUSC_PASSWORD
+    params = {'check': 1,
+              'botmode': 1,
+              'user': username,
+              'language': lang,
+              'project': project,
+              'password': password,
+              }
+    url = 'http://toolserver.org/~magnus/tusc.php'
+    r = requests.post(url, params, headers=headers)
+    try:
+        if int(r.text) == 1:
+            return True
+    except Exception:
+        pass
+    return False
