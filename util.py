@@ -63,7 +63,7 @@ class SGE:
 
     @property
     def cmd(self):
-        cmd = ['qsub',
+        cmd = ['jsub',
                '-N',
                self.name,
                self.script,
