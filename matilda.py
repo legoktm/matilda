@@ -5,8 +5,6 @@ Copyright (C) 2013 Legoktm
 
 Licensed as CC-Zero. See https://creativecommons.org/publicdomain/zero/1.0 for more details.
 """
-import time
-import datetime
 import hashlib
 import mwparserfromhell as mwparser
 import os
