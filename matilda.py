@@ -227,5 +227,5 @@ class FeedBot:
 
 
 if __name__ == "__main__":
-    robot = FeedBot(open_db())
+    robot = FeedBot()
     robot.run()
