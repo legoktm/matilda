@@ -12,8 +12,7 @@ import oursql
 import pywikibot
 import simplejson
 import traceback
-
-import lib
+import wdapi
 
 wikidata = pywikibot.DataSite('wikidata','wikidata')
 
@@ -144,7 +143,7 @@ class Job:
         if not item.exists():
             if self.create:
                 try:
-                    item = lib.createItem(page)
+                    item = wdapi.createItem(page)
                 except:
                     tb = traceback.format_exc()
                     l = {'status': 'couldnotcreate',
@@ -181,7 +180,7 @@ class Job:
             self.log.append(l)
             return
 
-        ok, error = lib.canClaimBeAdded(item, self.claim, checkDupe=True)
+        ok, error = wdapi.canClaimBeAdded(item, self.claim, checkDupe=True)
         if ok:
             item.addClaim(self.claim, bot=True)
             if self.sources:
