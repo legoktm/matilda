@@ -216,7 +216,7 @@ class FeedBot:
                 continue
             self.run_job(job)
             current = self.page.get(force=True)
-            current = current.replace(job+'\n', '').strip()
+            current = current.replace(job + '\n', '').strip()
             self.page.put(current, 'Bot: Removing archived job')
 
     def run_job(self, job):
