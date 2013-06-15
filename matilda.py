@@ -71,6 +71,7 @@ class Log:
              'edits': self.data,
              'id': self.job.toMD5(),
              'status': status,
+             'notified': False
              }
         filename = LOG_PATH + self.job.toMD5() + '.json'
         with open(filename, 'w') as f:
