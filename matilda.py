@@ -41,6 +41,18 @@ SOURCE_VALUES = SOURCE_VALUES['wikipedia']
 for lang in SOURCE_VALUES:
     SOURCE_VALUES[lang] = pywikibot.ItemPage(wikidata, SOURCE_VALUES[lang])
 
+def create_all_json():
+    # Creates the LOGPATH + 'all.json' file.
+    filename = LOG_PATH + 'all.json'
+    if os.path.exists(filename):
+        # huh???
+        return
+    d = {'jobs': {},
+         'updated': str(pywikibot.Timestamp.today()),
+         }
+    with open(filename, 'w') as f:
+        simplejson.dump(d, f)
+
 
 class Log:
     def __init__(self, job):
@@ -64,6 +76,18 @@ class Log:
         with open(filename, 'w') as f:
             simplejson.dump(d, f)
         print 'Saved to {0}.'.format(filename)
+        # Now we need to update the all.json file.
+        create_all_json()  # Make sure it already exists
+        # Modify the current dict
+        del d['edits']
+        d['filename'] = filename
+        with open(LOG_PATH + 'all.json', 'r') as f:
+            all_data = simplejson.load(f)
+        all_data['jobs'][d['id']] = d
+        all_data['updated'] = str(pywikibot.Timestamp.today())
+        with open(LOG_PATH + 'all.json', 'w') as f:
+            simplejson.dump(all_data, f)
+        # Ok we're done.
 
 
 class Job:
