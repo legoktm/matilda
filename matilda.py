@@ -13,7 +13,7 @@ import simplejson
 import traceback
 import wdapi
 
-wikidata = pywikibot.DataSite('wikidata','wikidata')
+wikidata = pywikibot.Site('en','wikipedia').data_repository()
 
 pywikibot.handleArgs()
 
