@@ -238,7 +238,7 @@ class Job:
             print claim.getTarget()
             if claim.getType() == 'wikibase-item':
                 target = claim.getTarget().getID()
-            else:  # Assume this is a stirng I guess.
+            else:  # Assume this is a string I guess.
                 target = claim.getTarget()
             ok, error = wdapi.canClaimBeAdded(item, claim, checkDupe=True)
             print (ok, error)
