@@ -6,7 +6,7 @@ Copyright (C) 2013 Legoktm
 Licensed as CC-Zero. See https://creativecommons.org/publicdomain/zero/1.0 for more details.
 """
 import hashlib
-import mwparserfromhell as mwparser
+import mwparserfromhell as mwp
 import os
 import pywikibot
 import simplejson
@@ -103,7 +103,7 @@ class Job:
         self._start = pywikibot.Timestamp.today()
         self.repo = wikidata
         #parse the line
-        temp = mwparser.parse(line).filter_templates()[0]
+        temp = mwp.parse(line).filter_templates()[0]
         data = {'lang': unicode(temp.get(1).value),
                 'source': unicode(temp.get(2).value),
                 'pid': unicode(temp.get(3).value),
