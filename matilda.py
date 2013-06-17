@@ -8,7 +8,6 @@ Licensed as CC-Zero. See https://creativecommons.org/publicdomain/zero/1.0 for m
 import hashlib
 import mwparserfromhell as mwparser
 import os
-import oursql
 import pywikibot
 import simplejson
 import traceback
@@ -23,15 +22,9 @@ if not os.path.exists(LOG_PATH):
     os.mkdir(LOG_PATH)
 LOG_PATH += '/'
 
+
 def md5(value):
     return hashlib.md5(value).hexdigest()
-
-def open_db():
-    return oursql.connect(
-        read_default_file=os.path.expanduser("~/.my.cnf"),
-        raise_on_warnings=False,
-    )
-
 
 # SOURCE_VALUES
 
