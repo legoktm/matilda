@@ -106,17 +106,38 @@ class Job:
         temp = mwp.parse(line).filter_templates()[0]
         data = {'lang': unicode(temp.get(1).value),
                 'source': unicode(temp.get(2).value),
-                'pid': unicode(temp.get(3).value),
-                'target_qid': unicode(temp.get(4).value),
                 'row': line,  # Do we even need this?
                 'user':unicode(temp.get(5).value),
                 }
+        claims = [(unicode(temp.get(3).value), unicode(temp.get(4).value))]
         #build the summary
         #lets build some options
-        whitelist = ('ignoreprefix','create','ignore','recursion','pid','qid')
+        whitelist = ('ignoreprefix','create','ignore','recursion')
         for param in temp.params:
-            if unicode(param.name).startswith(whitelist):
+            if unicode(param.name).startswith('pid'):
+                try:
+                    claims.append(
+                        (unicode(temp.get(param.name).value),
+                         unicode(temp.get(unicode(param.name).replace('p', 'q')).value))
+                    )
+                except KeyError:
+                    pass  # bad input
+            elif unicode(param.name).startswith(whitelist):
                 data[unicode(param.name)] = unicode(param.value)
+        self.c = []
+        for pid, qid in claims:
+            claim = pywikibot.Claim(self.repo, pid)
+            if claim.getType() == 'wikibase-item':
+                target = pywikibot.ItemPage(self.repo, qid)
+            elif claim.getType():
+                target = unicode(qid)  # Just for reasons
+            else:
+                # we cant handle this property, just skip it
+                continue
+            claim.setTarget(target)
+            self.c.append(claim)
+
+        data['claims'] = claims
         print data
         self.data = data
 
@@ -155,10 +176,6 @@ class Job:
             self.log.abort('badgenerator', 'A valid generator could not be parsed')
             raise ValueError("Could not parse generator.")
 
-        #construct the claim
-        self.claim = pywikibot.Claim(self.repo, self.data['pid'])
-        self.claim.setTarget(pywikibot.ItemPage(self.repo, self.data['target_qid']))
-
         if self.lang in SOURCE_VALUES:
             self.sources = pywikibot.Claim(self.repo, 'p143')
             self.sources.setTarget(SOURCE_VALUES[self.lang])
@@ -194,7 +211,10 @@ class Job:
 
         #set up the logger data
         l = {'item': item.getID(),
-             'page': page_data}
+             'page': page_data,
+             'claims_added': list(),
+             'claims_skipped': list(),
+             }
         for prefix in self.ignore_prefix:
             if page.title().startswith(prefix):
                 l['status'] = 'blacklist'
@@ -213,15 +233,27 @@ class Job:
             self.log.append(l)
             return
 
-        ok, error = wdapi.canClaimBeAdded(item, self.claim, checkDupe=True)
-        if ok:
-            item.addClaim(self.claim, bot=True)
-            if self.sources:
-                self.claim.addSource(self.sources, bot=True)
-            l['status'] = 'success'
-        else:
-            l['status'] = 'constraint'
-            l['constraint'] = error
+        for claim in self.c:
+            ok, error = wdapi.canClaimBeAdded(item, claim, checkDupe=True)
+            if claim.getType() == 'wikibase-item':
+                target = claim.getTarget().getID()
+            else:  # Assume this is a stirng I guess.
+                target = claim.getTarget()
+            if ok:
+                item.addClaim(claim, bot=True)
+                if self.sources:
+                    claim.addSource(self.sources, bot=True)
+                l['claims_added'].append((claim.getID(), target))
+            else:
+                l['constraint'] = error
+                l['claims_skipped'].append((claim.getID(), target))
+
+            if not l['claims_skipped']:
+                l['status'] = 'success'
+            elif not l['claims_added']:
+                l['status'] = 'none'
+            else:
+                l['status'] = 'partial'
 
         self.log.append(l)
 
