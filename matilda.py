@@ -57,7 +57,18 @@ class Log:
         # values are dict objects
         self.data.append(value)
 
-    def finish(self, status):
+    def abort(self, code, msg):
+        """
+
+        @param code: machine readable error code
+        @param msg: human readable explanation
+        @return: nothing
+        """
+        # TODO: Do something else here.
+
+        self.finish('aborted', errorcode=code, error=msg)
+
+    def finish(self, status, **kwargs):
         d = {'start': str(self.start),
              'finish': str(pywikibot.Timestamp.today()),
              'job': self.job.toJSON(),
@@ -66,6 +77,9 @@ class Log:
              'status': status,
              'notified': False
              }
+        for kw in kwargs:
+            # Let us override values if we want to.
+            d[kw] = kwargs[kw]
         filename = LOG_PATH + self.job.toMD5() + '.json'
         with open(filename, 'w') as f:
             simplejson.dump(d, f)
@@ -138,6 +152,7 @@ class Job:
             template = pywikibot.Page(self.local_site, self.source)
             gen = template.getReferences(follow_redirects=False, onlyTemplateInclusion=True, namespaces=[0])
         else:
+            self.log.abort('badgenerator', 'A valid generator could not be parsed')
             raise ValueError("Could not parse generator.")
 
         #construct the claim
