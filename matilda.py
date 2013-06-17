@@ -234,11 +234,14 @@ class Job:
             return
 
         for claim in self.c:
-            ok, error = wdapi.canClaimBeAdded(item, claim, checkDupe=True)
+            print claim
+            print claim.getTarget()
             if claim.getType() == 'wikibase-item':
                 target = claim.getTarget().getID()
             else:  # Assume this is a stirng I guess.
                 target = claim.getTarget()
+            ok, error = wdapi.canClaimBeAdded(item, claim, checkDupe=True)
+            print (ok, error)
             if ok:
                 item.addClaim(claim, bot=True)
                 if self.sources:
