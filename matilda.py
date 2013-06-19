@@ -185,6 +185,8 @@ class Job:
         for page in gen:
             self.run_page(page)
 
+        self.log.finish('success')
+
     def run_page(self, page):
         page_data = {'site': page.site.dbName(),
                      'title': page.title(),
