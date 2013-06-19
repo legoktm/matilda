@@ -10,6 +10,7 @@ import mwparserfromhell as mwp
 import os
 import pywikibot
 import simplejson
+import sys
 import traceback
 import wdapi
 
@@ -191,6 +192,8 @@ class Job:
         page_data = {'site': page.site.dbName(),
                      'title': page.title(),
                      }
+        if '--print' in sys.argv:
+            print page
         item = pywikibot.ItemPage.fromPage(page)
         if not item.exists():
             if self.create:
@@ -236,14 +239,11 @@ class Job:
             return
 
         for claim in self.c:
-            print claim
-            print claim.getTarget()
             if claim.getType() == 'wikibase-item':
                 target = claim.getTarget().getID()
             else:  # Assume this is a string I guess.
                 target = claim.getTarget()
             ok, error = wdapi.canClaimBeAdded(item, claim, checkDupe=True)
-            print (ok, error)
             if ok:
                 item.addClaim(claim, bot=True)
                 if self.sources:
