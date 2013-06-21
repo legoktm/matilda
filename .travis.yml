@@ -10,7 +10,7 @@ install:
   - "python ~/rewrite/setup.py install"
   - "python setup.py install"
 # command to run tests
-script: python setup.py test
+script: python tests/main.py
 notifications:
   email: false
   irc: 
