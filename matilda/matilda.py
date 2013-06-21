@@ -51,6 +51,7 @@ def create_all_json():
     with open(filename, 'w') as f:
         simplejson.dump(d, f)
 
+
 class Log:
     def __init__(self, job):
         self.job = job  # Job class
