@@ -3,6 +3,7 @@ python:
   - "2.7"
 # command to install dependencies
 install:
+  - "echo $PWD"
   - "svn co https://svn.wikimedia.org/svnroot/pywikipedia/branches/rewrite/ ~/rewrite"
   - "mkdir ~/.pywikibot"
   - "curl https://gist.github.com/legoktm/5828299/raw/036c106afdd80c51d3a8b0f4b8585b487813438c/user-config.py > ~/.pywikibot/user-config.py"
