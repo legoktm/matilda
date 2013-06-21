@@ -145,7 +145,8 @@ class Job:
             self.c.append(claim)
 
         data['claims'] = claims
-        print data
+        if '--print' in sys.argv:
+            print data
         self.data = data
 
         #set up some easy variables to access (named in original script)
