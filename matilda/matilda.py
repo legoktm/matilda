@@ -14,26 +14,30 @@ import sys
 import traceback
 import wdapi
 
-wikidata = pywikibot.Site('en','wikipedia').data_repository()
-
-pywikibot.handleArgs()
-
 LOG_PATH = os.path.expanduser('~/public_html/archives')
-if not os.path.exists(LOG_PATH):
-    os.mkdir(LOG_PATH)
 LOG_PATH += '/'
+
+
+def create_archive_dir():
+    if not os.path.exists(LOG_PATH):
+        os.mkdir(LOG_PATH)
 
 
 def md5(value):
     return hashlib.md5(value).hexdigest()
 
-# SOURCE_VALUES
 
-page = pywikibot.Page(wikidata, 'Wikidata:List of wikis/python')
-SOURCE_VALUES = simplejson.loads(page.get())
-SOURCE_VALUES = SOURCE_VALUES['wikipedia']
-for lang in SOURCE_VALUES:
-    SOURCE_VALUES[lang] = pywikibot.ItemPage(wikidata, SOURCE_VALUES[lang])
+# SOURCE_VALUES
+def fetch_source_values():
+    wikidata = pywikibot.Site('en','wikipedia').data_repository()
+    page = pywikibot.Page(wikidata, 'Wikidata:List of wikis/python')
+    text = page.get()
+    SOURCE_VALUES = simplejson.loads(text)
+    SOURCE_VALUES = SOURCE_VALUES['wikipedia']
+
+    for lang in SOURCE_VALUES:
+        SOURCE_VALUES[lang] = pywikibot.ItemPage(wikidata, SOURCE_VALUES[lang])
+
 
 def create_all_json():
     # Creates the LOGPATH + 'all.json' file.
@@ -46,7 +50,6 @@ def create_all_json():
          }
     with open(filename, 'w') as f:
         simplejson.dump(d, f)
-
 
 class Log:
     def __init__(self, job):
@@ -297,5 +300,9 @@ class FeedBot:
 
 
 if __name__ == "__main__":
+    #init sequence
+    create_archive_dir()
+    fetch_source_values()
+
     robot = FeedBot()
     robot.run()
