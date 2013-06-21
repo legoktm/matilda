@@ -26,10 +26,12 @@ def create_archive_dir():
 def md5(value):
     return hashlib.md5(value).hexdigest()
 
+wikidata = pywikibot.Site('en','wikipedia').data_repository()
+
 
 # SOURCE_VALUES
 def fetch_source_values():
-    wikidata = pywikibot.Site('en','wikipedia').data_repository()
+
     page = pywikibot.Page(wikidata, 'Wikidata:List of wikis/python')
     text = page.get()
     SOURCE_VALUES = simplejson.loads(text)
