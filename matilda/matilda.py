@@ -40,6 +40,8 @@ def fetch_source_values():
     for lang in SOURCE_VALUES:
         SOURCE_VALUES[lang] = pywikibot.ItemPage(wikidata, SOURCE_VALUES[lang])
 
+    return SOURCE_VALUES
+
 
 def create_all_json():
     # Creates the LOGPATH + 'all.json' file.
@@ -184,6 +186,8 @@ class Job:
             self.log.abort('badgenerator', 'A valid generator could not be parsed')
             raise ValueError("Could not parse generator.")
 
+        SOURCE_VALUES = fetch_source_values()
+
         if self.lang in SOURCE_VALUES:
             self.sources = pywikibot.Claim(self.repo, 'p143')
             self.sources.setTarget(SOURCE_VALUES[self.lang])
@@ -306,7 +310,6 @@ class FeedBot:
 if __name__ == "__main__":
     #init sequence
     create_archive_dir()
-    fetch_source_values()
 
     robot = FeedBot()
     robot.run()
