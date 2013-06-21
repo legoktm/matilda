@@ -36,6 +36,7 @@ class TestBot(unittest.TestCase):
         self.assertTrue(os.path.exists(os.path.expanduser('~/public_html/archives')))
 
     def test_all_json_creation(self):
+        matilda.create_archive_dir()
         matilda.create_all_json()
         filename = os.path.expanduser('~/public_html/archives/all.json')
         self.assertTrue(os.path.exists(filename))
