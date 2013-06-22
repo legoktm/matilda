@@ -121,7 +121,7 @@ class Job:
         claims = [(unicode(temp.get(3).value), unicode(temp.get(4).value))]
         #build the summary
         #lets build some options
-        whitelist = ('ignoreprefix','create','ignore','recursion')
+        whitelist = ('ignoreprefix','nocreate','ignore','recursion')
         for param in temp.params:
             if unicode(param.name).startswith('pid'):
                 try:
