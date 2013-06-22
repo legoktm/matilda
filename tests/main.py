@@ -72,7 +72,8 @@ class TestBot(unittest.TestCase):
         self.assertLess(j._start, datetime.datetime.today())
 
     def testLog(self):
-        j = matilda.Job(self.line)
+        line = "{{User:Legobot/properties.js/row|fr|Category:Monument historique inscrit|P107|Q618123|pid2=P31|qid2=Q10387575|pid3=P17|qid3=Q142|Ayack|nocreate=yes|recursion=2}}"
+        j = matilda.Job(line)
         l = matilda.Log(j)
         self.assertLess(l.start, datetime.datetime.today())
         self.assertEqual(l.data, [])
