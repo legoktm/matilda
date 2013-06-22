@@ -92,7 +92,7 @@ class Log:
         filename = LOG_PATH + self.job.toMD5() + '.json'
         with open(filename, 'w') as f:
             simplejson.dump(d, f)
-        print 'Saved to {0}.'.format(filename)
+        pywikibot.output('Saved to {0}.'.format(filename))
         # Now we need to update the all.json file.
         create_all_json()  # Make sure it already exists
         # Modify the current dict
@@ -148,7 +148,7 @@ class Job:
 
         data['claims'] = claims
         if '--print' in sys.argv:
-            print data
+            pywikibot.output(data)
         self.data = data
 
         #set up some easy variables to access (named in original script)
@@ -175,7 +175,7 @@ class Job:
         if self.source.startswith(tuple(self.local_site.namespaces()[14])):
             category = pywikibot.Category(self.local_site, self.source)
             try:
-                print 'Fetching %s ' % (category.title().encode('utf-8'))
+                pywikibot.output('Fetching %s ' % (category.title().encode('utf-8')))
             except UnicodeDecodeError:
                 pass
             gen = category.articles(namespaces=[0], recurse=self.recursion)
@@ -204,7 +204,7 @@ class Job:
                      'title': page.title(),
                      }
         if '--print' in sys.argv:
-            print page
+            pywikibot.output(page)
         item = pywikibot.ItemPage.fromPage(page)
         if not item.exists():
             if self.create:
