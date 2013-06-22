@@ -55,6 +55,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(j.data['claims'], [(u'P107', u'Q618123'), (u'P31', u'Q10387575'), (u'P17', u'Q142')])
         self.assertEqual(j.source, 'Category:Monument historique inscrit')
         self.assertFalse(j.create)
+        self.assertEqual(j.data['user'], 'Ayack')
 
     def testLog(self):
         j = matilda.Job(self.line)
