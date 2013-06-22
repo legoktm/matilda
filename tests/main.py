@@ -56,11 +56,12 @@ class TestBot(unittest.TestCase):
         self.assertEqual(j.source, 'Category:Monument historique inscrit')
         self.assertFalse(j.create)
         self.assertEqual(j.data['user'], 'Ayack')
+        self.assertLess(j._start, datetime.datetime.today())
 
     def testLog(self):
         j = matilda.Job(self.line)
         l = matilda.Log(j)
-        self.assertTrue(l.start < datetime.datetime.today())
+        self.assertLess(l.start, datetime.datetime.today())
         self.assertEqual(l.data, [])
         l.append('test')
         self.assertEqual(l.data, ['test'])
