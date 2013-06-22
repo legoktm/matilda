@@ -33,7 +33,7 @@ from matilda import matilda
 class TestBot(unittest.TestCase):
 
     def setUp(self):
-        self.line = "{{User:Legobot/properties.js/row|fr|Category:Monument historique inscrit|P107|Q618123|pid2=P31|qid2=Q10387575|pid3=P17|qid3=Q142|Ayack|create=yes|recursion=2}}"
+        self.line = "{{User:Legobot/properties.js/row|fr|Category:Monument historique inscrit|P107|Q618123|pid2=P31|qid2=Q10387575|pid3=P17|qid3=Q142|Ayack|nocreate=yes|recursion=2}}"
 
     def test_dir_creation(self):
         matilda.create_archive_dir()
@@ -54,7 +54,7 @@ class TestBot(unittest.TestCase):
         self.assertEqual(j.lang, 'fr')
         self.assertEqual(j.data['claims'], [(u'P107', u'Q618123'), (u'P31', u'Q10387575'), (u'P17', u'Q142')])
         self.assertEqual(j.source, 'Category:Monument historique inscrit')
-        self.assertTrue(j.create)
+        self.assertFalse(j.create)
 
     def testLog(self):
         j = matilda.Job(self.line)
